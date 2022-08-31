@@ -53,13 +53,15 @@ function App() {
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Header text="Swag Order Shop" />
         <Stack direction="row" spacing={1} alignItems="center">
-          {pathname !== "/" && <HomeIcon onClick={() => navigate("/")} />}
+          {pathname !== "/" && (
+            <HomeIcon className="clickable" onClick={() => navigate("/")} />
+          )}
           <Badge
             badgeContent={Object.keys(swagOrders).length}
             color="primary"
             onClick={() => navigate("/my-cart")}
           >
-            <ShoppingCartIcon />
+            <ShoppingCartIcon className="clickable" />
           </Badge>
         </Stack>
       </Stack>

@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import FormControl from "@mui/material/FormControl";
+import Stack from "@mui/material/Stack";
 
 function SwagCard({ swag, orderQuantity, updateSwagOrders }) {
-  const [quantity, setQuantity] = useState("");
-
-  useEffect(() => {
-    setQuantity(orderQuantity);
-  }, [orderQuantity]);
+  const [quantity, setQuantity] = useState(orderQuantity || "");
 
   const handleQuantityChange = (input) => {
     if (input === "") {
@@ -30,25 +30,40 @@ function SwagCard({ swag, orderQuantity, updateSwagOrders }) {
 
   const btnDisabled =
     quantity === "" || quantity === 0 || quantity > swag.quantity;
-  const message =
-    quantity > swag.quantity ? "Please reduce your oder quantity!" : "";
 
   return (
-    <>
-      <div>This is {swag.name}</div>
-      <div>This is a picture</div>
-      <div>Quantity: {swag.quantity}</div>
-      <TextField
-        label="Enter your order quantity"
-        value={quantity}
-        onChange={(event) => handleQuantityChange(event.target.value)}
-        variant="standard"
-      />
-      <Button variant="outlined" onClick={handleClick} disabled={btnDisabled}>
-        Add to Order
-      </Button>
-      <div className="message">{message}</div>
-    </>
+    <Stack spacing={1}>
+      <img className="swag-card-width" src={swag.image} height="250" />
+      <div>{swag.name}</div>
+      <div>Stock: {swag.quantity}</div>
+      <Stack
+        className="swag-card-width"
+        direction="row"
+        justifyContent="space-between"
+      >
+        <FormControl sx={{ minWidth: 120 }} size="small">
+          <InputLabel id="quantity-label">Quantity</InputLabel>
+          <Select
+            labelId="quantity-label"
+            value={quantity}
+            label="Quantity"
+            onChange={(event) => handleQuantityChange(event.target.value)}
+          >
+            {[...Array(Math.min(30, swag.quantity)).keys()]
+              .map((x) => x + 1)
+              .map((num) => (
+                <MenuItem key={num} value={num}>
+                  {num}
+                </MenuItem>
+              ))}
+          </Select>
+        </FormControl>
+
+        <Button variant="outlined" onClick={handleClick} disabled={btnDisabled}>
+          Add to Order
+        </Button>
+      </Stack>
+    </Stack>
   );
 }
 

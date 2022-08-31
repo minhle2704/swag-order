@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -9,7 +10,6 @@ import Stack from "@mui/material/Stack";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
-import { useNavigate } from "react-router-dom";
 
 function MyCart({
   swagOrders,
@@ -48,16 +48,23 @@ function MyCart({
               <TableCell align="left">
                 <Stack direction="row" alignItems="center" spacing={3}>
                   <RemoveIcon
+                    className="clickable"
                     onClick={() =>
                       handleDecrease(swagOrder.id, swagOrder.quantity)
                     }
                   />
                   <div>{swagOrder.quantity}</div>
-                  <AddIcon onClick={() => increaseSwagOrder(swagOrder.id)} />
+                  <AddIcon
+                    className="clickable"
+                    onClick={() => increaseSwagOrder(swagOrder.id)}
+                  />
                 </Stack>
               </TableCell>
               <TableCell align="left">
-                <DeleteIcon onClick={() => removeSwagOrder(swagOrder.id)} />
+                <DeleteIcon
+                  className="clickable"
+                  onClick={() => removeSwagOrder(swagOrder.id)}
+                />
               </TableCell>
             </TableRow>
           ))}
