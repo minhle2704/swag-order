@@ -10,9 +10,10 @@ import MyCart from "./component/MyCart";
 import CheckOut from "./component/CheckOut";
 import Header from "./component/Header";
 import SwagCardContainer from "./component/SwagCardContainer";
-import swagData from "./data/swagData";
+import originalSwagData from "./data/swagData";
 
 function App() {
+  const [swagData, setSwagData] = useState(originalSwagData);
   const [swagOrders, setSwagOrders] = useState({});
 
   const navigate = useNavigate();
@@ -27,6 +28,22 @@ function App() {
       setSwagOrders({ ...swagOrders, [id]: { id, name, quantity } });
     }
   };
+
+  const updateSwagData = () => {
+    setSwagData(
+      swagData.map((swag) => {
+        if (swagOrders[swag.id]) {
+          return {
+            ...swag,
+            quantity: swag.quantity - swagOrders[swag.id].quantity,
+          };
+        }
+        return swag;
+      })
+    );
+  };
+
+  const clearSwagOrders = () => setSwagOrders({});
 
   const decreaseSwagOrder = (id) => {
     setSwagOrders({
@@ -90,7 +107,15 @@ function App() {
           }
         ></Route>
 
-        <Route path="/check-out" element={<CheckOut />}></Route>
+        <Route
+          path="/check-out"
+          element={
+            <CheckOut
+              clearSwagOrders={clearSwagOrders}
+              updateSwagData={updateSwagData}
+            />
+          }
+        ></Route>
       </Routes>
     </Container>
   );

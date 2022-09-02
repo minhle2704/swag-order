@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
@@ -10,7 +11,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
-export default function CheckOut() {
+export default function CheckOut({ clearSwagOrders, updateSwagData }) {
   const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
@@ -19,12 +20,17 @@ export default function CheckOut() {
   const [shouldOpenConfirmOrderDialog, setShouldOpenConfirmOrderDialog] =
     useState(false);
 
+  const navigate = useNavigate();
+
   const handleClickOpenConfirmOrderDialog = () => {
     setShouldOpenConfirmOrderDialog(true);
   };
 
   const handleCloseConfirmOrderDialog = () => {
     setShouldOpenConfirmOrderDialog(false);
+    clearSwagOrders();
+    updateSwagData();
+    navigate("/");
   };
 
   const isEmailAddressValid =
