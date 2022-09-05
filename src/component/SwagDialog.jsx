@@ -21,7 +21,7 @@ function SwagDialog({ swag, swagData, setSwagData, onClose }) {
     }
   };
 
-  // Add Swag
+  // Add swag
   const handleAddSwag = async () => {
     const payload = {
       name: swagName,
@@ -42,7 +42,7 @@ function SwagDialog({ swag, swagData, setSwagData, onClose }) {
     onClose();
   };
 
-  // Edit Swag
+  // Edit swag
   const handleEditSwag = async () => {
     const payload = {
       name: swagName,

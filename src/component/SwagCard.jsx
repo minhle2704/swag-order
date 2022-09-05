@@ -9,6 +9,7 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import Menu from "@mui/material/Menu";
 
 import SwagDialog from "./SwagDialog";
+import DeleteSwagDialog from "./DeleteSwagDialog";
 
 function SwagCard({
   swag,
@@ -21,6 +22,8 @@ function SwagCard({
   const [shouldOpenManageSwagMenu, setShouldOpenManageSwagMenu] =
     useState(false);
   const [shouldOpenEditSwagDialog, setShouldOpenEditSwagDialog] =
+    useState(false);
+  const [shouldOpenDeleteSwagDialog, setshouldOpenDeleteSwagDialog] =
     useState(false);
 
   const manageSwagButton = useRef();
@@ -59,6 +62,15 @@ function SwagCard({
 
   const handleCloseEditSwagDialog = () => {
     setShouldOpenEditSwagDialog(false);
+  };
+
+  const handleOpenDeleteSwagDialog = () => {
+    setshouldOpenDeleteSwagDialog(true);
+  };
+
+  const handleCloseDeleteSwagDialog = () => {
+    setShouldOpenManageSwagMenu(false);
+    setshouldOpenDeleteSwagDialog(false);
   };
 
   const canAddToCart = quantity > 0;
@@ -103,7 +115,7 @@ function SwagCard({
           onClose={handleCloseManageSwagMenu}
         >
           <MenuItem onClick={handleClickOpenEditSwagDialog}>Edit Swag</MenuItem>
-          <MenuItem onClick={handleCloseManageSwagMenu}>Delete Swag</MenuItem>
+          <MenuItem onClick={handleOpenDeleteSwagDialog}>Delete Swag</MenuItem>
         </Menu>
       </Stack>
 
@@ -113,6 +125,15 @@ function SwagCard({
           swagData={swagData}
           setSwagData={setSwagData}
           onClose={handleCloseEditSwagDialog}
+        />
+      )}
+
+      {shouldOpenDeleteSwagDialog && (
+        <DeleteSwagDialog
+          swag={swag}
+          swagData={swagData}
+          setSwagData={setSwagData}
+          handleCloseDeleteSwagDialog={handleCloseDeleteSwagDialog}
         />
       )}
     </Stack>
