@@ -1,13 +1,29 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import Stack from "@mui/material/Stack";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import Menu from "@mui/material/Menu";
 
-function SwagCard({ swag, orderQuantity, updateSwagOrders }) {
+import SwagDialog from "./SwagDialog";
+
+function SwagCard({
+  swag,
+  swagData,
+  orderQuantity,
+  setSwagData,
+  updateSwagOrders,
+}) {
   const [quantity, setQuantity] = useState(orderQuantity || "");
+  const [shouldOpenManageSwagMenu, setShouldOpenManageSwagMenu] =
+    useState(false);
+  const [shouldOpenEditSwagDialog, setShouldOpenEditSwagDialog] =
+    useState(false);
+
+  const manageSwagButton = useRef();
 
   const handleQuantityChange = (input) => {
     if (input === "") {
@@ -24,23 +40,35 @@ function SwagCard({ swag, orderQuantity, updateSwagOrders }) {
     setQuantity(quantity);
   };
 
-  const handleClick = () => {
+  const handleAddToCart = () => {
     updateSwagOrders(swag, quantity);
   };
 
-  const btnDisabled =
-    quantity === "" || quantity === 0 || quantity > swag.quantity;
+  const handleClickOpenManageSwagMenu = () => {
+    setShouldOpenManageSwagMenu(true);
+  };
+
+  const handleCloseManageSwagMenu = () => {
+    setShouldOpenManageSwagMenu(false);
+  };
+
+  const handleClickOpenEditSwagDialog = () => {
+    setShouldOpenManageSwagMenu(false);
+    setShouldOpenEditSwagDialog(true);
+  };
+
+  const handleCloseEditSwagDialog = () => {
+    setShouldOpenEditSwagDialog(false);
+  };
+
+  const canAddToCart = quantity > 0;
 
   return (
     <Stack spacing={1}>
       <img className="swag-card-width" src={swag.image} height="250" />
       <div>{swag.name}</div>
       <div>Stock: {swag.quantity}</div>
-      <Stack
-        className="swag-card-width"
-        direction="row"
-        justifyContent="space-between"
-      >
+      <Stack direction="row" alignItems="center" spacing={1}>
         <FormControl sx={{ minWidth: 120 }} size="small">
           <InputLabel id="quantity-label">Quantity</InputLabel>
           <Select
@@ -59,10 +87,34 @@ function SwagCard({ swag, orderQuantity, updateSwagOrders }) {
           </Select>
         </FormControl>
 
-        <Button variant="outlined" onClick={handleClick} disabled={btnDisabled}>
-          Add to Order
+        {canAddToCart && (
+          <AddShoppingCartIcon
+            className="clickable"
+            onClick={handleAddToCart}
+          />
+        )}
+
+        <Button ref={manageSwagButton} onClick={handleClickOpenManageSwagMenu}>
+          Manage Swag
         </Button>
+        <Menu
+          anchorEl={manageSwagButton.current}
+          open={shouldOpenManageSwagMenu}
+          onClose={handleCloseManageSwagMenu}
+        >
+          <MenuItem onClick={handleClickOpenEditSwagDialog}>Edit Swag</MenuItem>
+          <MenuItem onClick={handleCloseManageSwagMenu}>Delete Swag</MenuItem>
+        </Menu>
       </Stack>
+
+      {shouldOpenEditSwagDialog && (
+        <SwagDialog
+          swag={swag}
+          swagData={swagData}
+          setSwagData={setSwagData}
+          onClose={handleCloseEditSwagDialog}
+        />
+      )}
     </Stack>
   );
 }

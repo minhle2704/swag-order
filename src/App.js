@@ -1,25 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Badge from "@mui/material/Badge";
 import Stack from "@mui/material/Stack";
 import Container from "@mui/material/Container";
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
 
 import MyCart from "./component/MyCart";
 import CheckOut from "./component/CheckOut";
 import Header from "./component/Header";
 import SwagCardContainer from "./component/SwagCardContainer";
-import originalSwagData from "./data/swagData";
+import SwagDialog from "./component/SwagDialog";
 
 function App() {
-  const [swagData, setSwagData] = useState(originalSwagData);
+  const [swagData, setSwagData] = useState([]);
   const [swagOrders, setSwagOrders] = useState({});
+  const [shouldOpenAddSwagDialog, setShouldOpenAddSwagDialog] = useState(false);
+
+  useEffect(() => {
+    fetchSwagData();
+  }, []);
 
   const navigate = useNavigate();
 
   const { pathname } = useLocation();
 
+  const handleClickOpenAddSwagDialog = () => {
+    setShouldOpenAddSwagDialog(true);
+  };
+
+  const handleCloseAddSwagDialog = () => {
+    setShouldOpenAddSwagDialog(false);
+  };
+
+  // Fetch swagData
+  const fetchSwagData = async () => {
+    const response = await fetch("/swags");
+    const data = await response.json();
+
+    setSwagData(data);
+  };
+
+  // Record customer order
   const updateSwagOrders = (swag, quantity) => {
     const { id, name } = swag;
     if (swagOrders[id]) {
@@ -29,6 +53,7 @@ function App() {
     }
   };
 
+  // Update swag data after customer order
   const updateSwagData = () => {
     setSwagData(
       swagData.map((swag) => {
@@ -73,6 +98,7 @@ function App() {
           {pathname !== "/" && (
             <HomeIcon className="clickable" onClick={() => navigate("/")} />
           )}
+
           <Badge
             badgeContent={Object.keys(swagOrders).length}
             color="primary"
@@ -80,6 +106,10 @@ function App() {
           >
             <ShoppingCartIcon className="clickable" />
           </Badge>
+
+          <Fab size="small" color="secondary">
+            <AddIcon fontSize="small" onClick={handleClickOpenAddSwagDialog} />
+          </Fab>
         </Stack>
       </Stack>
 
@@ -90,6 +120,7 @@ function App() {
             <SwagCardContainer
               swagData={swagData}
               swagOrders={swagOrders}
+              setSwagData={setSwagData}
               updateSwagOrders={updateSwagOrders}
             />
           }
@@ -117,6 +148,14 @@ function App() {
           }
         ></Route>
       </Routes>
+
+      {shouldOpenAddSwagDialog && (
+        <SwagDialog
+          swagData={swagData}
+          setSwagData={setSwagData}
+          onClose={handleCloseAddSwagDialog}
+        />
+      )}
     </Container>
   );
 }
