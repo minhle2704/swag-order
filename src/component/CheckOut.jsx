@@ -11,7 +11,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
-export default function CheckOut({ clearSwagOrders, updateSwagData }) {
+export default function CheckOut({ swagOrders, clearSwagOrders, setSwagData }) {
   const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
@@ -31,6 +31,23 @@ export default function CheckOut({ clearSwagOrders, updateSwagData }) {
     clearSwagOrders();
     updateSwagData();
     navigate("/");
+  };
+
+  // Update swag data after customer order
+  const updateSwagData = async () => {
+    const payload = Object.values(swagOrders);
+
+    const response = await fetch("http://localhost:5000/commit-order", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+
+    setSwagData(data);
   };
 
   const isEmailAddressValid =

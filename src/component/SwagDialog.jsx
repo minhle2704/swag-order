@@ -29,17 +29,20 @@ function SwagDialog({ swag, swagData, setSwagData, onClose }) {
       category: swagCategory,
       image: swagImage,
     };
-    const response = await fetch("/swags", {
+
+    const response = await fetch("http://localhost:5000/swags", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(payload),
     });
-    const addedSwag = await response.json();
 
-    setSwagData([...swagData, addedSwag]);
-    onClose();
+    if (response.ok) {
+      const addedSwag = await response.json();
+      setSwagData([...swagData, addedSwag]);
+      onClose();
+    }
   };
 
   // Edit swag
@@ -50,8 +53,8 @@ function SwagDialog({ swag, swagData, setSwagData, onClose }) {
       category: swagCategory,
       image: swagImage,
     };
-    const response = await fetch(`/swags/${swag.id}`, {
-      method: "PUT",
+    const response = await fetch(`http://localhost:5000/swags/${swag.id}`, {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },

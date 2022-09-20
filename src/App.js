@@ -37,7 +37,7 @@ function App() {
 
   // Fetch swagData
   const fetchSwagData = async () => {
-    const response = await fetch("/swags");
+    const response = await fetch("http://localhost:5000/swags");
     const data = await response.json();
 
     setSwagData(data);
@@ -51,21 +51,6 @@ function App() {
     } else {
       setSwagOrders({ ...swagOrders, [id]: { id, name, quantity } });
     }
-  };
-
-  // Update swag data after customer order
-  const updateSwagData = () => {
-    setSwagData(
-      swagData.map((swag) => {
-        if (swagOrders[swag.id]) {
-          return {
-            ...swag,
-            quantity: swag.quantity - swagOrders[swag.id].quantity,
-          };
-        }
-        return swag;
-      })
-    );
   };
 
   const clearSwagOrders = () => setSwagOrders({});
@@ -142,8 +127,9 @@ function App() {
           path="/check-out"
           element={
             <CheckOut
+              swagOrders={swagOrders}
               clearSwagOrders={clearSwagOrders}
-              updateSwagData={updateSwagData}
+              setSwagData={setSwagData}
             />
           }
         ></Route>

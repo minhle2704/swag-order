@@ -11,19 +11,17 @@ function SwagCardContainer({
 }) {
   return (
     <Grid container spacing={2}>
-      {swagData.map((swag) => {
-        return (
-          <Grid key={swag.id} xs={4}>
-            <SwagCard
-              swag={swag}
-              swagData={swagData}
-              orderQuantity={swagOrders[swag.id]?.quantity}
-              setSwagData={setSwagData}
-              updateSwagOrders={updateSwagOrders}
-            />
-          </Grid>
-        );
-      })}
+      {swagData.map((swag) => (
+        <Grid key={swag.id} xs={4}>
+          <SwagCard
+            swag={swag}
+            swagData={swagData}
+            orderQuantity={swagOrders[swag.id]?.quantity}
+            setSwagData={setSwagData}
+            updateSwagOrders={updateSwagOrders}
+          />
+        </Grid>
+      ))}
     </Grid>
   );
 }

@@ -13,7 +13,10 @@ function DeleteSwagDialog({
 }) {
   // Delete swag
   const handleDeleteSwag = async () => {
-    await fetch(`/swags/${swag.id}`, { method: "DELETE" });
+    await fetch(`http://localhost:5000/swags/${swag.id}`, {
+      method: "DELETE",
+    });
+
     setSwagData(swagData.filter((swagItem) => swag.id !== swagItem.id));
   };
 
