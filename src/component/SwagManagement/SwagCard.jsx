@@ -12,6 +12,7 @@ import SwagDialog from "./SwagDialog";
 import DeleteSwagDialog from "./DeleteSwagDialog";
 
 function SwagCard({
+  user,
   swag,
   swagData,
   orderQuantity,
@@ -74,6 +75,7 @@ function SwagCard({
   };
 
   const canAddToCart = quantity > 0;
+  const canManageSwag = user.role === "admin";
 
   return (
     <Stack spacing={1}>
@@ -106,9 +108,16 @@ function SwagCard({
           />
         )}
 
-        <Button ref={manageSwagButton} onClick={handleClickOpenManageSwagMenu}>
-          Manage Swag
-        </Button>
+        {canManageSwag && (
+          <Button
+            color="secondary"
+            ref={manageSwagButton}
+            onClick={handleClickOpenManageSwagMenu}
+          >
+            Manage Swag
+          </Button>
+        )}
+
         <Menu
           anchorEl={manageSwagButton.current}
           open={shouldOpenManageSwagMenu}

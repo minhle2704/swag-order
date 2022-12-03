@@ -4,6 +4,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 import SwagCard from "./SwagCard";
 
 function SwagCardContainer({
+  user,
   swagData,
   swagOrders,
   setSwagData,
@@ -14,6 +15,7 @@ function SwagCardContainer({
       {swagData.map((swag) => (
         <Grid key={swag.id} xs={4}>
           <SwagCard
+            user={user}
             swag={swag}
             swagData={swagData}
             orderQuantity={swagOrders[swag.id]?.quantity}

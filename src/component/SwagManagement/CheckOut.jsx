@@ -11,7 +11,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
-export default function CheckOut({ swagOrders, clearSwagOrders, setSwagData }) {
+function CheckOut({ user, swagOrders, clearSwagOrders, setSwagData }) {
   const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
@@ -35,7 +35,7 @@ export default function CheckOut({ swagOrders, clearSwagOrders, setSwagData }) {
 
   // Update swag data after customer order
   const updateSwagData = async () => {
-    const payload = Object.values(swagOrders);
+    const payload = { userId: user.id, swagOrders: swagOrders };
 
     const response = await fetch("http://localhost:5000/commit-order", {
       method: "POST",
@@ -62,18 +62,21 @@ export default function CheckOut({ swagOrders, clearSwagOrders, setSwagData }) {
     <Stack spacing={4} width="50ch">
       <Stack spacing={1} width="50ch">
         <TextField
+          color="secondary"
           label="Name"
           variant="standard"
           value={name}
           onChange={(event) => setName(event.target.value)}
         />
         <TextField
+          color="secondary"
           label="Phone Number"
           variant="standard"
           value={phoneNumber}
           onChange={(event) => setPhoneNumber(event.target.value)}
         />
         <TextField
+          color="secondary"
           label="Email Address"
           variant="standard"
           value={emailAddress}
@@ -82,6 +85,7 @@ export default function CheckOut({ swagOrders, clearSwagOrders, setSwagData }) {
           helperText={emailAddressHelperText}
         />
         <TextField
+          color="secondary"
           label="Deliver Address"
           variant="standard"
           value={deliveryAddress}
@@ -91,6 +95,7 @@ export default function CheckOut({ swagOrders, clearSwagOrders, setSwagData }) {
 
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
+          color="secondary"
           label="Delivery Date"
           value={date}
           onChange={(date) => {
@@ -100,7 +105,11 @@ export default function CheckOut({ swagOrders, clearSwagOrders, setSwagData }) {
         />
       </LocalizationProvider>
 
-      <Button variant="outlined" onClick={handleClickOpenConfirmOrderDialog}>
+      <Button
+        color="secondary"
+        variant="outlined"
+        onClick={handleClickOpenConfirmOrderDialog}
+      >
         Confirm Order
       </Button>
 
@@ -122,3 +131,5 @@ export default function CheckOut({ swagOrders, clearSwagOrders, setSwagData }) {
     </Stack>
   );
 }
+
+export default CheckOut;

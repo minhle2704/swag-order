@@ -1,31 +1,35 @@
 import React, { useState, useEffect } from "react";
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import HomeIcon from "@mui/icons-material/Home";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import Badge from "@mui/material/Badge";
-import Stack from "@mui/material/Stack";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Container from "@mui/material/Container";
-import Fab from "@mui/material/Fab";
-import AddIcon from "@mui/icons-material/Add";
 
-import MyCart from "./component/MyCart";
-import CheckOut from "./component/CheckOut";
+import MyCart from "./component/SwagManagement/MyCart";
+import CheckOut from "./component/SwagManagement/CheckOut";
 import Header from "./component/Header";
-import SwagCardContainer from "./component/SwagCardContainer";
-import SwagDialog from "./component/SwagDialog";
+import SwagCardContainer from "./component/SwagManagement/SwagCardContainer";
+import SwagDialog from "./component/SwagManagement/SwagDialog";
+import Login from "./component/UserManagement/Login";
+import MyOrder from "./component/UserManagement/MyOrder";
 
 function App() {
+  const [user, setUser] = useState(null);
   const [swagData, setSwagData] = useState([]);
   const [swagOrders, setSwagOrders] = useState({});
   const [shouldOpenAddSwagDialog, setShouldOpenAddSwagDialog] = useState(false);
-
-  useEffect(() => {
-    fetchSwagData();
-  }, []);
+  const [orderData, setOrderData] = useState([]);
 
   const navigate = useNavigate();
 
-  const { pathname } = useLocation();
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      fetchSwagData();
+    }
+  }, [user]);
 
   const handleClickOpenAddSwagDialog = () => {
     setShouldOpenAddSwagDialog(true);
@@ -77,32 +81,21 @@ function App() {
 
   return (
     <Container>
-      <Stack direction="row" justifyContent="space-between" alignItems="center">
-        <Header text="Swag Order Shop" />
-        <Stack direction="row" spacing={1} alignItems="center">
-          {pathname !== "/" && (
-            <HomeIcon className="clickable" onClick={() => navigate("/")} />
-          )}
-
-          <Badge
-            badgeContent={Object.keys(swagOrders).length}
-            color="primary"
-            onClick={() => navigate("/my-cart")}
-          >
-            <ShoppingCartIcon className="clickable" />
-          </Badge>
-
-          <Fab size="small" color="secondary">
-            <AddIcon fontSize="small" onClick={handleClickOpenAddSwagDialog} />
-          </Fab>
-        </Stack>
-      </Stack>
+      <Header
+        text="Swag Shop Order"
+        user={user}
+        swagOrders={swagOrders}
+        handleClickOpenAddSwagDialog={handleClickOpenAddSwagDialog}
+      />
 
       <Routes>
+        <Route path="/login" element={<Login setUser={setUser} />}></Route>
+
         <Route
           path="/"
           element={
             <SwagCardContainer
+              user={user}
               swagData={swagData}
               swagOrders={swagOrders}
               setSwagData={setSwagData}
@@ -127,9 +120,22 @@ function App() {
           path="/check-out"
           element={
             <CheckOut
+              user={user}
               swagOrders={swagOrders}
               clearSwagOrders={clearSwagOrders}
               setSwagData={setSwagData}
+            />
+          }
+        ></Route>
+
+        <Route
+          path="/my-order"
+          element={
+            <MyOrder
+              user={user}
+              swagOrders={swagOrders}
+              orderData={orderData}
+              setOrderData={setOrderData}
             />
           }
         ></Route>
