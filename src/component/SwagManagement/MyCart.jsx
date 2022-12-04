@@ -28,8 +28,8 @@ function MyCart({
   };
 
   return (
-    <>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+    <Stack spacing={2}>
+      <Table>
         <TableHead>
           <TableRow>
             <TableCell align="left">Swag Name</TableCell>
@@ -40,10 +40,7 @@ function MyCart({
 
         <TableBody>
           {Object.values(swagOrders).map((swagOrder) => (
-            <TableRow
-              key={swagOrder.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
+            <TableRow key={swagOrder.id}>
               <TableCell align="left">{swagOrder.name}</TableCell>
               <TableCell align="left">
                 <Stack direction="row" alignItems="center" spacing={3}>
@@ -72,9 +69,14 @@ function MyCart({
       </Table>
 
       <Stack direction="row" justifyContent="right">
-        <Button onClick={() => navigate("/check-out")}>Check out</Button>
+        <Button
+          disabled={!Object.values(swagOrders).length}
+          onClick={() => navigate("/check-out")}
+        >
+          Check out
+        </Button>
       </Stack>
-    </>
+    </Stack>
   );
 }
 

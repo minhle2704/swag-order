@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import Stack from "@mui/material/Stack";
 
 import OrderTile from "./OrderTile";
 
@@ -26,12 +27,14 @@ function MyOrder({ user, orderData, setOrderData }) {
   };
 
   return (
-    <div>
-      <div>My Order</div>
-      {orderData.map((order) => (
-        <OrderTile key={Object.keys(order)[0]} order={order} />
-      ))}
-    </div>
+    <>
+      <h3>My Order</h3>
+      <Stack spacing={1}>
+        {orderData.map((order) => (
+          <OrderTile key={Object.keys(order)[0]} order={order} />
+        ))}
+      </Stack>
+    </>
   );
 }
 

@@ -4,11 +4,23 @@ import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
+import FormControl from "@mui/material/FormControl";
+import Input from "@mui/material/Input";
+import InputLabel from "@mui/material/InputLabel";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 function Login({ setUser }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [loginError, setLoginError] = useState(false);
+  const [shouldShowPassword, setShouldShowPassword] = useState(false);
+  const [hasLoginError, setHasLoginError] = useState(false);
+
+  const handleClickShowPassword = () => {
+    setShouldShowPassword(!shouldShowPassword);
+  };
 
   const navigate = useNavigate();
 
@@ -31,7 +43,7 @@ function Login({ setUser }) {
       setUser({ username, role, id, orders });
       navigate("/");
     } else {
-      setLoginError(true);
+      setHasLoginError(true);
     }
   };
 
@@ -45,20 +57,29 @@ function Login({ setUser }) {
           value={username}
           onChange={(event) => setUsername(event.target.value)}
         />
-        <TextField
-          color="secondary"
-          label="Password"
-          variant="standard"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-        />
+
+        <FormControl variant="standard">
+          <InputLabel>Password</InputLabel>
+          <Input
+            type={shouldShowPassword ? "text" : "password"}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton onClick={handleClickShowPassword}>
+                  {shouldShowPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            }
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+        </FormControl>
       </Stack>
 
       <Button color="secondary" variant="outlined" onClick={handleUserLogin}>
         Submit
       </Button>
 
-      {loginError && (
+      {hasLoginError && (
         <Alert severity="error">
           You have provided a wrong username and password combination. Please
           try again!
