@@ -4,13 +4,11 @@ import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
-import FormControl from "@mui/material/FormControl";
-import Input from "@mui/material/Input";
-import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import Link from "@mui/material/Link";
 
 function Login({ setUser }) {
   const [username, setUsername] = useState("");
@@ -58,26 +56,46 @@ function Login({ setUser }) {
           onChange={(event) => setUsername(event.target.value)}
         />
 
-        <FormControl variant="standard">
-          <InputLabel>Password</InputLabel>
-          <Input
-            type={shouldShowPassword ? "text" : "password"}
-            endAdornment={
+        <TextField
+          color="secondary"
+          label="Password"
+          variant="standard"
+          type={shouldShowPassword ? "text" : "password"}
+          InputProps={{
+            endAdornment: (
               <InputAdornment position="end">
                 <IconButton onClick={handleClickShowPassword}>
                   {shouldShowPassword ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
               </InputAdornment>
-            }
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </FormControl>
+            ),
+          }}
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+        />
       </Stack>
 
-      <Button color="secondary" variant="outlined" onClick={handleUserLogin}>
+      <Button
+        disabled={!username || !password}
+        color="secondary"
+        variant="outlined"
+        onClick={handleUserLogin}
+      >
         Submit
       </Button>
+      <div>
+        Don't have an account?{" "}
+        <Link
+          href="/sign-up"
+          onClick={(event) => {
+            event.preventDefault();
+            navigate("/sign-up");
+          }}
+          underline="hover"
+        >
+          Sign Up
+        </Link>
+      </div>
 
       {hasLoginError && (
         <Alert severity="error">

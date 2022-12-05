@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import Container from "@mui/material/Container";
 
 import MyCart from "./component/SwagManagement/MyCart";
@@ -9,6 +9,7 @@ import SwagCardContainer from "./component/SwagManagement/SwagCardContainer";
 import SwagDialog from "./component/SwagManagement/SwagDialog";
 import Login from "./component/UserManagement/Login";
 import MyOrder from "./component/UserManagement/MyOrder";
+import SignUp from "./component/UserManagement/SignUp";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -17,10 +18,12 @@ function App() {
   const [shouldOpenAddSwagDialog, setShouldOpenAddSwagDialog] = useState(false);
   const [orderData, setOrderData] = useState([]);
 
+  const { pathname } = useLocation();
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user) {
+    if (!user && pathname !== "/sign-up") {
       navigate("/login");
     }
   }, []);
@@ -90,7 +93,7 @@ function App() {
 
       <Routes>
         <Route path="/login" element={<Login setUser={setUser} />}></Route>
-
+        <Route path="/sign-up" element={<SignUp setUser={setUser} />}></Route>
         <Route
           path="/"
           element={

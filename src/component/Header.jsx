@@ -15,7 +15,7 @@ function Header({ text, user, swagOrders, handleClickOpenAddSwagDialog }) {
   return (
     <Stack direction="row" justifyContent="space-between" alignItems="center">
       <h1>{text}</h1>
-      {pathname !== "/login" && (
+      {pathname !== "/login" && pathname !== "/sign-up" && (
         <Stack direction="row" spacing={1} alignItems="center">
           <Button variant="text" onClick={() => navigate("/my-order")}>
             Hello {user?.username}

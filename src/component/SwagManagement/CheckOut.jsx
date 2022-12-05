@@ -14,7 +14,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 function CheckOut({ user, swagOrders, clearSwagOrders, setSwagData }) {
   const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [emailAddress, setEmailAddress] = useState("");
   const [deliveryAddress, setDeliveryAddress] = useState("");
   const [date, setDate] = useState(null);
   const [shouldOpenConfirmOrderDialog, setShouldOpenConfirmOrderDialog] =
@@ -50,14 +49,6 @@ function CheckOut({ user, swagOrders, clearSwagOrders, setSwagData }) {
     setSwagData(data);
   };
 
-  const isEmailAddressValid =
-    !emailAddress ||
-    !!emailAddress.match(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+$/);
-
-  const emailAddressHelperText = isEmailAddressValid
-    ? ""
-    : "Example: example@mail.com";
-
   return (
     <Stack spacing={4} width="50ch">
       <Stack spacing={1} width="50ch">
@@ -75,15 +66,7 @@ function CheckOut({ user, swagOrders, clearSwagOrders, setSwagData }) {
           value={phoneNumber}
           onChange={(event) => setPhoneNumber(event.target.value)}
         />
-        <TextField
-          color="secondary"
-          label="Email Address"
-          variant="standard"
-          value={emailAddress}
-          onChange={(event) => setEmailAddress(event.target.value)}
-          error={!isEmailAddressValid}
-          helperText={emailAddressHelperText}
-        />
+
         <TextField
           color="secondary"
           label="Deliver Address"
