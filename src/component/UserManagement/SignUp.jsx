@@ -10,7 +10,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Link from "@mui/material/Link";
 
-function SignUp({ setUser }) {
+function SignUp({ setUser, saveUserToLocalStorage }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -45,8 +45,11 @@ function SignUp({ setUser }) {
     });
 
     if (response.ok) {
-      const { role, id, orders } = await response.json();
-      setUser({ username, role, id, orders });
+      const { firstName, lastName, username, role, id, email } =
+        await response.json();
+      const user = { firstName, lastName, username, role, id, email };
+      setUser(user);
+      saveUserToLocalStorage(user);
       navigate("/");
     } else {
       const error = await response.text();

@@ -10,6 +10,7 @@ import SwagDialog from "./component/SwagManagement/SwagDialog";
 import Login from "./component/UserManagement/Login";
 import MyOrder from "./component/UserManagement/MyOrder";
 import SignUp from "./component/UserManagement/SignUp";
+import MyProfile from "./component/UserManagement/MyProfile";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -23,10 +24,20 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user && pathname !== "/sign-up") {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      setUser(parsedUser);
+      return;
+    }
+    if (pathname !== "/sign-up") {
       navigate("/login");
     }
   }, []);
+
+  const saveUserToLocalStorage = (user) => {
+    localStorage.setItem("user", JSON.stringify(user));
+  };
 
   useEffect(() => {
     if (user) {
@@ -92,8 +103,26 @@ function App() {
       />
 
       <Routes>
-        <Route path="/login" element={<Login setUser={setUser} />}></Route>
-        <Route path="/sign-up" element={<SignUp setUser={setUser} />}></Route>
+        <Route
+          path="/login"
+          element={
+            <Login
+              setUser={setUser}
+              saveUserToLocalStorage={saveUserToLocalStorage}
+            />
+          }
+        ></Route>
+
+        <Route
+          path="/sign-up"
+          element={
+            <SignUp
+              setUser={setUser}
+              saveUserToLocalStorage={saveUserToLocalStorage}
+            />
+          }
+        ></Route>
+
         <Route
           path="/"
           element={
@@ -131,12 +160,13 @@ function App() {
           }
         ></Route>
 
+        <Route path="/my-profile" element={<MyProfile user={user} />}></Route>
+
         <Route
           path="/my-order"
           element={
             <MyOrder
               user={user}
-              swagOrders={swagOrders}
               orderData={orderData}
               setOrderData={setOrderData}
             />

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -7,19 +7,55 @@ import Stack from "@mui/material/Stack";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 
 function Header({ text, user, swagOrders, handleClickOpenAddSwagDialog }) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const [shouldOpenMenu, setShouldOpenMenu] = useState(false);
+  const buttonRef = useRef();
+
+  const handleClick = () => {
+    setShouldOpenMenu(true);
+  };
+  const handleClose = () => {
+    setShouldOpenMenu(false);
+  };
+
+  const handleClickLogOut = () => {
+    handleClose();
+    navigate("/login");
+    localStorage.clear();
+  };
+
+  const handleClickMyOrder = () => {
+    handleClose();
+    navigate("/my-order");
+  };
+
+  const handleClickMyProfile = () => {
+    handleClose();
+    navigate("/my-profile");
+  };
 
   return (
     <Stack direction="row" justifyContent="space-between" alignItems="center">
       <h1>{text}</h1>
       {pathname !== "/login" && pathname !== "/sign-up" && (
         <Stack direction="row" spacing={1} alignItems="center">
-          <Button variant="text" onClick={() => navigate("/my-order")}>
-            Hello {user?.username}
+          <Button ref={buttonRef} onClick={handleClick}>
+            Hello {user?.firstName}
           </Button>
+          <Menu
+            anchorEl={buttonRef.current}
+            open={shouldOpenMenu}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={handleClickMyProfile}>My Profile</MenuItem>
+            <MenuItem onClick={handleClickMyOrder}>My Order</MenuItem>
+            <MenuItem onClick={handleClickLogOut}>Logout</MenuItem>
+          </Menu>
 
           {pathname !== "/" && (
             <HomeIcon className="clickable" onClick={() => navigate("/")} />

@@ -10,7 +10,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Link from "@mui/material/Link";
 
-function Login({ setUser }) {
+function Login({ setUser, saveUserToLocalStorage }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [shouldShowPassword, setShouldShowPassword] = useState(false);
@@ -37,8 +37,11 @@ function Login({ setUser }) {
     });
 
     if (response.ok) {
-      const { role, id, orders } = await response.json();
-      setUser({ username, role, id, orders });
+      const { firstName, lastName, username, role, id, email } =
+        await response.json();
+      const user = { firstName, lastName, username, role, id, email };
+      setUser(user);
+      saveUserToLocalStorage(user);
       navigate("/");
     } else {
       setHasLoginError(true);
