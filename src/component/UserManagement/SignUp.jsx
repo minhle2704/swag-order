@@ -4,28 +4,21 @@ import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
-import InputAdornment from "@mui/material/InputAdornment";
-import IconButton from "@mui/material/IconButton";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Link from "@mui/material/Link";
+import CreatePassword from "./CreatePassword";
+
+import { isEmailValid } from "../../helpers";
 
 function SignUp({ setUser, saveUserToLocalStorage }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [createPassword, setCreatePassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
-  const [shouldShowPassword, setShouldShowPassword] = useState(false);
   const [signUpError, setSignUpError] = useState(null);
 
   const navigate = useNavigate();
-
-  const handleClickShowPassword = () => {
-    setShouldShowPassword(!shouldShowPassword);
-  };
 
   const handleUserSignUp = async () => {
     const payload = {
@@ -33,7 +26,7 @@ function SignUp({ setUser, saveUserToLocalStorage }) {
       lastName,
       email,
       username,
-      password,
+      password: createPassword,
     };
 
     const response = await fetch("http://localhost:5000/sign-up", {
@@ -57,11 +50,8 @@ function SignUp({ setUser, saveUserToLocalStorage }) {
     }
   };
 
-  const isPasswordMatch = password === confirmPassword;
-  const passwordHelperText = isPasswordMatch ? "" : "Password does not match";
+  const isEmailAddressValid = isEmailValid(email);
 
-  const isEmailAddressValid =
-    !email || !!email.match(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+$/);
   const emailAddressHelperText = isEmailAddressValid
     ? ""
     : "Example: example@mail.com";
@@ -103,48 +93,20 @@ function SignUp({ setUser, saveUserToLocalStorage }) {
           onChange={(event) => setUsername(event.target.value)}
         />
 
-        <TextField
-          color="secondary"
-          label="Create Password"
-          variant="standard"
-          type={shouldShowPassword ? "text" : "password"}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={handleClickShowPassword}>
-                  {shouldShowPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-        />
-
-        <TextField
-          color="secondary"
-          label="Confirm Password"
-          variant="standard"
-          type={shouldShowPassword ? "text" : "password"}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={handleClickShowPassword}>
-                  {shouldShowPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-          value={confirmPassword}
-          onChange={(event) => setConfirmPassword(event.target.value)}
-          error={!isPasswordMatch}
-          helperText={passwordHelperText}
+        <CreatePassword
+          createPassword={createPassword}
+          setCreatePassword={setCreatePassword}
+          confirmPassword={confirmPassword}
+          setConfirmPassword={setConfirmPassword}
         />
       </Stack>
 
       <Button
         disabled={
-          !username || !password || !email || password !== confirmPassword
+          !username ||
+          !createPassword ||
+          !email ||
+          createPassword !== confirmPassword
         }
         color="secondary"
         variant="outlined"
@@ -167,6 +129,19 @@ function SignUp({ setUser, saveUserToLocalStorage }) {
         </Link>
       </div>
 
+      <div>
+        Forget your password?{" "}
+        <Link
+          href="/sign-up"
+          onClick={(event) => {
+            event.preventDefault();
+            navigate("/forget-password");
+          }}
+          underline="hover"
+        >
+          Reset password
+        </Link>
+      </div>
       {signUpError && <Alert severity="error">{signUpError}</Alert>}
     </Stack>
   );

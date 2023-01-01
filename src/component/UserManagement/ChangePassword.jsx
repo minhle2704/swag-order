@@ -54,33 +54,35 @@ function ChangePassword({ user }) {
   };
 
   return (
-    <Stack spacing={1} width="35ch">
-      <TextField
-        color="secondary"
-        label="Current Password"
-        variant="standard"
-        type={shouldShowPassword ? "text" : "password"}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton onClick={handleClickShowPassword}>
-                {shouldShowPassword ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
-        value={password}
-        onChange={(event) => setPassword(event.target.value)}
-      />
+    <Stack spacing={3} width="35ch">
+      <Stack spacing={1}>
+        <TextField
+          color="secondary"
+          label="Current Password"
+          variant="standard"
+          type={shouldShowPassword ? "text" : "password"}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={handleClickShowPassword}>
+                  {shouldShowPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+        />
 
-      <CreatePassword
-        firstPasswordError={isOldPasswordUsed}
-        firstPasswordHelperText={firstPasswordHelperText}
-        createPassword={createPassword}
-        setCreatePassword={setCreatePassword}
-        confirmPassword={confirmPassword}
-        setConfirmPassword={setConfirmPassword}
-      />
+        <CreatePassword
+          firstPasswordError={isOldPasswordUsed}
+          firstPasswordHelperText={firstPasswordHelperText}
+          createPassword={createPassword}
+          setCreatePassword={setCreatePassword}
+          confirmPassword={confirmPassword}
+          setConfirmPassword={setConfirmPassword}
+        />
+      </Stack>
 
       <Button
         disabled={

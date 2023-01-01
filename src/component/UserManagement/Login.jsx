@@ -49,7 +49,7 @@ function Login({ setUser, saveUserToLocalStorage }) {
   };
 
   return (
-    <Stack width="25ch" spacing={2}>
+    <Stack width="35ch" spacing={3}>
       <Stack spacing={1}>
         <TextField
           color="secondary"
@@ -58,7 +58,6 @@ function Login({ setUser, saveUserToLocalStorage }) {
           value={username}
           onChange={(event) => setUsername(event.target.value)}
         />
-
         <TextField
           color="secondary"
           label="Password"
@@ -97,6 +96,20 @@ function Login({ setUser, saveUserToLocalStorage }) {
           underline="hover"
         >
           Sign Up
+        </Link>
+      </div>
+
+      <div>
+        Forget your password?{" "}
+        <Link
+          href="/sign-up"
+          onClick={(event) => {
+            event.preventDefault();
+            navigate("/forget-password");
+          }}
+          underline="hover"
+        >
+          Reset password
         </Link>
       </div>
 

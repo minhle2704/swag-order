@@ -42,43 +42,47 @@ function Header({ text, user, swagOrders, handleClickOpenAddSwagDialog }) {
   return (
     <Stack direction="row" justifyContent="space-between" alignItems="center">
       <h1>{text}</h1>
-      {pathname !== "/login" && pathname !== "/sign-up" && (
-        <Stack direction="row" spacing={1} alignItems="center">
-          <Button ref={buttonRef} onClick={handleClick}>
-            Hello {user?.firstName}
-          </Button>
-          <Menu
-            anchorEl={buttonRef.current}
-            open={shouldOpenMenu}
-            onClose={handleClose}
-          >
-            <MenuItem onClick={handleClickMyProfile}>My Profile</MenuItem>
-            <MenuItem onClick={handleClickMyOrder}>My Order</MenuItem>
-            <MenuItem onClick={handleClickLogOut}>Logout</MenuItem>
-          </Menu>
 
-          {pathname !== "/" && (
-            <HomeIcon className="clickable" onClick={() => navigate("/")} />
-          )}
+      {pathname !== "/login" &&
+        pathname !== "/sign-up" &&
+        pathname !== "/forget-password" &&
+        pathname !== "/reset-password" && (
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Button ref={buttonRef} onClick={handleClick}>
+              Hello {user?.firstName}
+            </Button>
+            <Menu
+              anchorEl={buttonRef.current}
+              open={shouldOpenMenu}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={handleClickMyProfile}>My Profile</MenuItem>
+              <MenuItem onClick={handleClickMyOrder}>My Order</MenuItem>
+              <MenuItem onClick={handleClickLogOut}>Logout</MenuItem>
+            </Menu>
 
-          <Badge
-            badgeContent={Object.keys(swagOrders).length}
-            color="secondary"
-            onClick={() => navigate("/my-cart")}
-          >
-            <ShoppingCartIcon className="clickable" />
-          </Badge>
+            {pathname !== "/" && (
+              <HomeIcon className="clickable" onClick={() => navigate("/")} />
+            )}
 
-          {user?.role === "admin" && (
-            <Fab size="small" color="secondary">
-              <AddIcon
-                fontSize="small"
-                onClick={handleClickOpenAddSwagDialog}
-              />
-            </Fab>
-          )}
-        </Stack>
-      )}
+            <Badge
+              badgeContent={Object.keys(swagOrders).length}
+              color="secondary"
+              onClick={() => navigate("/my-cart")}
+            >
+              <ShoppingCartIcon className="clickable" />
+            </Badge>
+
+            {user?.role === "admin" && (
+              <Fab size="small" color="secondary">
+                <AddIcon
+                  fontSize="small"
+                  onClick={handleClickOpenAddSwagDialog}
+                />
+              </Fab>
+            )}
+          </Stack>
+        )}
     </Stack>
   );
 }

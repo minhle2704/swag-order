@@ -12,6 +12,8 @@ import MyOrder from "./component/UserManagement/MyOrder";
 import SignUp from "./component/UserManagement/SignUp";
 import MyProfile from "./component/UserManagement/MyProfile";
 import ChangePassword from "./component/UserManagement/ChangePassword";
+import ForgetPassword from "./component/UserManagement/ForgetPassword";
+import ResetPassword from "./component/UserManagement/ResetPassword";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -31,7 +33,11 @@ function App() {
       setUser(parsedUser);
       return;
     }
-    if (pathname !== "/sign-up") {
+    if (
+      pathname !== "/sign-up" &&
+      pathname !== "/forget-password" &&
+      pathname !== "/reset-password"
+    ) {
       navigate("/login");
     }
   }, []);
@@ -167,6 +173,10 @@ function App() {
           path="/change-password"
           element={<ChangePassword user={user} />}
         ></Route>
+
+        <Route path="/forget-password" element={<ForgetPassword />}></Route>
+
+        <Route path="/reset-password" element={<ResetPassword />}></Route>
 
         <Route
           path="/my-order"
