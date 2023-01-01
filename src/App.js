@@ -11,6 +11,7 @@ import Login from "./component/UserManagement/Login";
 import MyOrder from "./component/UserManagement/MyOrder";
 import SignUp from "./component/UserManagement/SignUp";
 import MyProfile from "./component/UserManagement/MyProfile";
+import ChangePassword from "./component/UserManagement/ChangePassword";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -161,6 +162,11 @@ function App() {
         ></Route>
 
         <Route path="/my-profile" element={<MyProfile user={user} />}></Route>
+
+        <Route
+          path="/change-password"
+          element={<ChangePassword user={user} />}
+        ></Route>
 
         <Route
           path="/my-order"
