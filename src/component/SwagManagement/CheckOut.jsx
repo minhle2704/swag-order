@@ -34,7 +34,13 @@ function CheckOut({ user, swagOrders, clearSwagOrders, setSwagData }) {
 
   // Update swag data after customer order
   const updateSwagData = async () => {
-    const payload = { userId: user.id, swagOrders: swagOrders };
+    const payload = {
+      userId: user.id,
+      swagOrders: swagOrders,
+      deliveryAddress,
+      phoneNumber,
+      date,
+    };
 
     const response = await fetch("http://localhost:5000/commit-order", {
       method: "POST",
