@@ -8,6 +8,7 @@ import Link from "@mui/material/Link";
 import CreatePassword from "./CreatePassword";
 
 import { isEmailValid } from "../../helpers";
+import { ENDPOINT } from "../../constants";
 
 function SignUp({ setUser, saveUserToLocalStorage }) {
   const [firstName, setFirstName] = useState("");
@@ -29,7 +30,7 @@ function SignUp({ setUser, saveUserToLocalStorage }) {
       password: createPassword,
     };
 
-    const response = await fetch("http://localhost:5000/sign-up", {
+    const response = await fetch(`${ENDPOINT}/sign-up`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

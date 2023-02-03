@@ -10,6 +10,8 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Link from "@mui/material/Link";
 
+import { ENDPOINT } from "../../constants";
+
 function Login({ setUser, saveUserToLocalStorage }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -28,7 +30,7 @@ function Login({ setUser, saveUserToLocalStorage }) {
       password,
     };
 
-    const response = await fetch("http://localhost:5000/login", {
+    const response = await fetch(`${ENDPOINT}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
