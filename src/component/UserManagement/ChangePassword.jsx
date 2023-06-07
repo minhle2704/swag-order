@@ -11,6 +11,8 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import CreatePassword from "./CreatePassword";
 import Alert from "@mui/material/Alert";
 
+import { ENDPOINT } from "../../constants";
+
 function ChangePassword({ user }) {
   const navigate = useNavigate();
 
