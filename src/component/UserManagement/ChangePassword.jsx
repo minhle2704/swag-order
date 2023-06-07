@@ -38,7 +38,7 @@ function ChangePassword({ user }) {
       newPassword: createPassword,
     };
 
-    const response = await fetch("http://localhost:5000/change-password", {
+    const response = await fetch(`${ENDPOINT}/change-password`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
