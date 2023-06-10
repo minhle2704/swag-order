@@ -15,6 +15,8 @@ import ChangePassword from "./component/UserManagement/ChangePassword";
 import ForgetPassword from "./component/UserManagement/ForgetPassword";
 import ResetPassword from "./component/UserManagement/ResetPassword";
 
+import { ENDPOINT } from "./constants";
+
 function App() {
   const [user, setUser] = useState(null);
   const [swagData, setSwagData] = useState([]);
@@ -62,7 +64,7 @@ function App() {
 
   // Fetch swagData
   const fetchSwagData = async () => {
-    const response = await fetch("http://localhost:5000/swags");
+    const response = await fetch(`${ENDPOINT}/swags`);
     const data = await response.json();
 
     setSwagData(data);
