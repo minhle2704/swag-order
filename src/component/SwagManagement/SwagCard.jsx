@@ -79,7 +79,7 @@ function SwagCard({
 
   return (
     <Stack spacing={1}>
-      <img className="swag-card-width" src={swag.image} height="250" />
+      <img className="swag-card-width" alt="" src={swag.image} height="250" />
       <div>{swag.name}</div>
       <div>Stock: {swag.quantity}</div>
       <Stack direction="row" alignItems="center" spacing={1}>

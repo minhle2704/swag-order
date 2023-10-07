@@ -42,7 +42,7 @@ function App() {
     ) {
       navigate("/login");
     }
-  }, []);
+  }, [navigate, pathname]);
 
   const saveUserToLocalStorage = (user) => {
     localStorage.setItem("user", JSON.stringify(user));

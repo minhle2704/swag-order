@@ -1,17 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import Stack from "@mui/material/Stack";
 
 import OrderTile from "./OrderTile";
 
 function MyOrder({ user, orderData, setOrderData }) {
-  // Fetch orderData
-  useEffect(() => {
-    if (user) {
-      fetchOrderData();
-    }
-  }, [user]);
-
-  const fetchOrderData = async () => {
+  const fetchOrderData = useCallback(async () => {
     const payload = { userId: user.id };
 
     const response = await fetch("http://localhost:5000/my-order", {
@@ -24,7 +17,14 @@ function MyOrder({ user, orderData, setOrderData }) {
 
     const data = await response.json();
     setOrderData(data.orders);
-  };
+  }, [user, setOrderData]);
+
+  // Fetch orderData
+  useEffect(() => {
+    if (user) {
+      fetchOrderData();
+    }
+  }, [fetchOrderData, user]);
 
   return (
     <>
